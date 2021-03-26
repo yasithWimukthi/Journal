@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "346146864527",
+    "project_id": "journal-58c34",
+    "storage_bucket": "journal-58c34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346146864527:android:82ed46aa24b8f6d8e15ffa",
+        "android_client_info": {
+          "package_name": "com.ninjacode98.journal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346146864527-trdrn3n044rkorj82goc3n0d431qgikq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMJwvNgFy7YxmVyf7ghE85wm1xTywPFCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346146864527-trdrn3n044rkorj82goc3n0d431qgikq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
