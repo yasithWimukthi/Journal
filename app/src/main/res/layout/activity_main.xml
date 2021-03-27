@@ -20,7 +20,6 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:gravity="center_horizontal"
-        android:cardUseCompactPadding="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -28,7 +27,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:cardElevation="12dp"
+            app:cardElevation="12dp"
             app:cardCornerRadius="8dp"
             >
 
