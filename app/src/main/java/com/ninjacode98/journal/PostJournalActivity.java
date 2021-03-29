@@ -10,5 +10,14 @@ public class PostJournalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_journal);
+
+//        Bundle bundle = getIntent().getExtras();
+//
+//        if(bundle != null){
+//            String username = bundle.getString("username");
+//            String userId = bundle.getString("userId");
+//        }
+
+
     }
 }
