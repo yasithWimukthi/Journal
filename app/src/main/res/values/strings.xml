@@ -9,4 +9,7 @@
     <string name="or_text">or</string>
     <string name="create_text">Create Account</string>
     <string name="username_hint">Enter Username</string>
+    <string name="title">Title</string>
+    <string name="thoughts">Your Thoughts...</string>
+    <string name="save">Save</string>
 </resources>
