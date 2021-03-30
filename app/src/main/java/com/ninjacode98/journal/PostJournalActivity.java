@@ -1,8 +1,10 @@
 package com.ninjacode98.journal;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,14 +17,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
-public class PostJournalActivity extends AppCompatActivity {
+import util.JournalApi;
+
+public class PostJournalActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button saveButton;
     private ProgressBar progressBar;
     private ImageView addPhotoButton;
     private EditText titleEditText;
     private EditText thoughtsEditText;
-    private TextView currentUserTextView;;
+    private TextView currentUserTextView;
 
     private String currentUsername;
     private String currentUserId;
@@ -53,6 +57,45 @@ public class PostJournalActivity extends AppCompatActivity {
         titleEditText = findViewById(R.id.post_title_et);
         thoughtsEditText = findViewById(R.id.post_description_et);
         currentUserTextView = findViewById(R.id.post_username_textview);
+        saveButton = findViewById(R.id.post_save_journal_button);
+        addPhotoButton = findViewById(R.id.postCameraButton);
 
+        if(JournalApi.getInstance() != null){
+            currentUsername = JournalApi.getInstance().getUsername();
+            currentUserId = JournalApi.getInstance().getUserId();
+
+            currentUserTextView.setText(currentUsername);
+        }
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+
+                if(user != null) {
+
+                }else {
+
+                }
+            }
+        };
+
+        saveButton.setOnClickListener(this);
+        addPhotoButton.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.post_save_journal_button:
+                break;
+            case R.id.postCameraButton:
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }
