@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,11 +16,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import util.JournalApi;
 
@@ -68,6 +73,8 @@ public class PostJournalActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         addPhotoButton = findViewById(R.id.postCameraButton);
 
+        progressBar.setVisibility(View.INVISIBLE);
+
         if(JournalApi.getInstance() != null){
             currentUsername = JournalApi.getInstance().getUsername();
             currentUserId = JournalApi.getInstance().getUserId();
@@ -88,9 +95,6 @@ public class PostJournalActivity extends AppCompatActivity {
             }
         };
 
-//        saveButton.setOnClickListener(this);
-//        addPhotoButton.setOnClickListener(this);
-
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,19 +104,38 @@ public class PostJournalActivity extends AppCompatActivity {
             }
         });
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                String title = titleEditText.getText().toString().trim();
+                String thoughts = thoughtsEditText.getText().toString().trim();
+
+                if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(thoughts) && imageUri != null) {
+                    StorageReference filePath = storageReference.child("journal_images").child("my_image_" + Timestamp.now().getSeconds());
+
+                    filePath.putFile(imageUri)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                }else{
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
     }
 
-   // @Override
-//    public void onClick(View v) {
-//        switch (v.getId()){
-//            case R.id.post_save_journal_button:
-//                break;
-//            case R.id.postCameraButton:
-//                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-//                galleryIntent.setType("image/*");
-//                startActivityForResult(galleryIntent,GALLERY_CODE);
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
