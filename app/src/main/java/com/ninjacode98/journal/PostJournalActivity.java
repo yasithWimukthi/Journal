@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,10 +23,15 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Date;
+
+import Model.Journal;
 import util.JournalApi;
 
 public class PostJournalActivity extends AppCompatActivity {
@@ -65,6 +71,7 @@ public class PostJournalActivity extends AppCompatActivity {
 //            String userId = bundle.getString("userId");
 //        }
         firebaseAuth = FirebaseAuth.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
         progressBar = findViewById(R.id.post_progressBar);
         titleEditText = findViewById(R.id.post_title_et);
         thoughtsEditText = findViewById(R.id.post_description_et);
@@ -119,7 +126,35 @@ public class PostJournalActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    progressBar.setVisibility(View.INVISIBLE);
+
+                                    filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Journal journal = new Journal();
+                                            journal.setTitle(title);
+                                            journal.setThought(thoughts);
+                                            journal.setImageURL(uri.toString());
+                                            journal.setTimeAdded(new Timestamp(new Date()));
+                                            journal.setUserID(currentUserId);
+                                            journal.setUserName(currentUsername);
+
+                                            collectionReference.add(journal)
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            progressBar.setVisibility(View.INVISIBLE);
+                                                            startActivity(new Intent(PostJournalActivity.this,JournalListActivity.class));
+                                                            finish();
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Saving Journal", "onFailure: " + e.getMessage());
+                                                        }
+                                                    });
+                                        }
+                                    });
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
