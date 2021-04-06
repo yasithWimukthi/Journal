@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                                     startActivity(new Intent(LoginActivity.this,PostJournalActivity.class));
 
-                                                    finish();
+                                                    
                                                 }
                                             }
                                         }
