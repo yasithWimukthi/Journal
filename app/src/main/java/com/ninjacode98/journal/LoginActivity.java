@@ -24,7 +24,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import util.JournalApi;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -88,7 +91,15 @@ public class LoginActivity extends AppCompatActivity {
                                         @Override
                                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                                             if(!value.isEmpty()){
+                                                for(QueryDocumentSnapshot snapshot : value){
+                                                    JournalApi journalApi = JournalApi.getInstance();
+                                                    journalApi.setUsername(snapshot.getString("username"));
+                                                    journalApi.setUserId(snapshot.getString("userId"));
 
+                                                    startActivity(new Intent(LoginActivity.this,PostJournalActivity.class));
+
+                                                    finish();
+                                                }
                                             }
                                         }
                                     });
