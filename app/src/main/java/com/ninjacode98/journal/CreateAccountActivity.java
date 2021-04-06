@@ -3,9 +3,11 @@ package com.ninjacode98.journal;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,7 @@ import util.JournalApi;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
+    private static final String TAG = "Create Account Activity ";
     private EditText emailEditText;
     private EditText passwordEditText;
     private EditText usernameEditText;
@@ -143,9 +146,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
+                                            @SuppressLint("LongLogTag")
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-
+                                                Log.e(TAG, "onFailure: " + e.getMessage());
                                             }
                                         });
                             }else{
@@ -154,9 +158,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
+                        @SuppressLint("LongLogTag")
                         @Override
                         public void onFailure(@NonNull Exception e) {
-
+                            Log.e(TAG, "onFailure: " + e.getMessage());
                         }
                     });
         }else{
