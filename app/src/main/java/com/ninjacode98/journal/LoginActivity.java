@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button createAccountButton;
     private AutoCompleteTextView emailTextView;
     private EditText passwordEditText;
+    private ProgressBar loginProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         createAccountButton = findViewById(R.id.create_account_button);
         emailTextView = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
+        loginProgressBar = findViewById(R.id.login_progress);
 
         createAccountButton.setOnClickListener(new View.OnClickListener() {
 
@@ -75,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginWithEmailAndPassword(String email, String password) {
 
+        loginProgressBar.setVisibility(View.VISIBLE);
+
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
 
             firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -91,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                                         @Override
                                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                                             if(!value.isEmpty()){
+                                                loginProgressBar.setVisibility(View.INVISIBLE);
                                                 for(QueryDocumentSnapshot snapshot : value){
                                                     JournalApi journalApi = JournalApi.getInstance();
                                                     journalApi.setUsername(snapshot.getString("username"));
@@ -98,7 +104,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                                     startActivity(new Intent(LoginActivity.this,PostJournalActivity.class));
 
-                                                    
                                                 }
                                             }
                                         }
@@ -108,11 +113,12 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-
+                            loginProgressBar.setVisibility(View.INVISIBLE);
                         }
                     });
 
         }else{
+            loginProgressBar.setVisibility(View.INVISIBLE);
             Toast.makeText(LoginActivity.this,"Please Enter Email And Password",Toast.LENGTH_SHORT).show();
         }
     }
