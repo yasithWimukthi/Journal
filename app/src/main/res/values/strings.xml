@@ -12,4 +12,6 @@
     <string name="title">Title</string>
     <string name="thoughts">Your Thoughts...</string>
     <string name="save">Save</string>
+    <string name="menu_title">Add Thoughts</string>
+    <string name="menu_sign_out" >Signout</string>
 </resources>
