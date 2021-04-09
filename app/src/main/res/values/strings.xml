@@ -15,4 +15,6 @@
     <string name="menu_title">Add Thoughts</string>
     <string name="menu_sign_out" >Signout</string>
     <string name="list_empty_hint">Write a Journal</string>
+    <string name="Title">title</string>
+    <string name="date">Date</string>
 </resources>
