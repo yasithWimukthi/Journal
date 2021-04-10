@@ -1,6 +1,8 @@
 package ui;
 
 import android.content.Context;
+import android.icu.text.RelativeDateTimeFormatter;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,11 +46,15 @@ public class JournalRecyclerAdapter extends RecyclerView.Adapter<JournalRecycler
         holder.title.setText(journal.getTitle());
         holder.thought.setText(journal.getThought());
 
+        String timeAgo = (String) DateUtils.getRelativeTimeSpanString(journal.getTimeAdded().getSeconds() * 1000);
+
         Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.image_one)
                 .fit()
                 .into(holder.image);
+
+        holder.dateAdded.setText(timeAgo);
 
     }
 
