@@ -6,6 +6,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class JournalRecyclerAdapter extends RecyclerView.Adapter<JournalRecycler
 
         holder.title.setText(journal.getTitle());
         holder.thought.setText(journal.getThought());
+        holder.name.setText(journal.getUserName());
 
         String timeAgo = (String) DateUtils.getRelativeTimeSpanString(journal.getTimeAdded().getSeconds() * 1000);
 
@@ -70,6 +72,7 @@ public class JournalRecyclerAdapter extends RecyclerView.Adapter<JournalRecycler
         public TextView dateAdded;
         public TextView name;
         public ImageView image;
+        public ImageButton shareBtn;
 
         public String userId;
         public String userName;
@@ -82,6 +85,8 @@ public class JournalRecyclerAdapter extends RecyclerView.Adapter<JournalRecycler
             thought = itemView.findViewById(R.id.journal_thought_list);
             dateAdded = itemView.findViewById(R.id.journal_time_list);
             image = itemView.findViewById(R.id.journal_image_list);
+            name = itemView.findViewById(R.id.journal_row_username);
+            shareBtn = itemView.findViewById(R.id.journal_row_share_button);
         }
     }
 }
